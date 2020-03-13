@@ -1,142 +1,195 @@
 package net.mason;
 
-import org.bukkit.Color;
+import com.sun.istack.internal.NotNull;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.banner.Pattern;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.util.Consumer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public interface ItemBuilder extends Cloneable {
+public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
 
-    static ItemBuilder of(ItemStack itemStack) {
-        return () -> itemStack;
+    private final Material material;
+    private final int amount;
+    private Consumer<T> meta;
+
+
+    /**
+     * @param material
+     * @param amount
+     */
+    public ItemBuilder(@NotNull Material material, @NotNull int amount) {
+        this.material = material;
+        this.amount = amount;
     }
 
-    static ItemBuilder of(Material material) {
-        return of(material, 1);
+    /**
+     * @param name
+     * @return the ItemStack display name
+     */
+    @NotNull
+    public ItemBuilder<T> setName(String name) {
+        return applyMeta(meta -> meta.setDisplayName(name));
     }
 
-    static ItemBuilder of(Material material, Integer amount) {
-        return of(new ItemStack(material, amount));
+    /**
+     * @param lore
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> setLore(List<String> lore) {
+        return applyMeta(meta -> meta.setLore(lore));
     }
 
-    ItemStack item();
-
-    default ItemBuilder setName(String name) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.setDisplayName(name));
-    }
-
-    default ItemBuilder setLore(List<String> lore) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.setLore(lore));
-    }
-
-    default ItemBuilder removeLoreLine(String line) {
-        if (!item().hasItemMeta()) {
+    /**
+     * @param line
+     * @return
+     */
+    public ItemBuilder<T> removeLoreLine(String line) {
+        if (!get().hasItemMeta()) {
             return this;
         }
 
-        final ItemMeta meta = item().getItemMeta();
-        final List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
+        final ItemMeta itemMeta = get().getItemMeta();
+        final List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
 
         if (lore.isEmpty() || !lore.contains(line)) {
             return this;
         }
 
         lore.remove(line);
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.setLore(lore));
+        return applyMeta(meta -> meta.setLore(lore));
     }
 
-    default ItemBuilder removeLoreLine(int index) {
-        if (!item().hasItemMeta()) {
+    /**
+     * @param index
+     * @return
+     */
+    public ItemBuilder<T> removeLoreLine(int index) {
+        if (!get().hasItemMeta()) {
             return this;
         }
 
-        final ItemMeta meta = item().getItemMeta();
-        final List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
+        final ItemMeta itemMeta = get().getItemMeta();
+        final List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
 
         if (index < 0 || index > lore.size() - 1) {
             return this;
         }
-
         lore.remove(index);
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.setLore(lore));
+        return applyMeta(meta -> meta.setLore(lore));
     }
 
-    default ItemBuilder addEnchantment(Enchantment enchantment, Integer amount, boolean var) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.addEnchant(enchantment, amount, var));
+    /**
+     * @param enchantment
+     * @param amount
+     * @param var
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> addEnchantment(Enchantment enchantment, int amount, boolean var) {
+        return applyMeta(meta -> meta.addEnchant(enchantment, amount, var));
     }
 
-    default ItemBuilder removeEnchantment(Enchantment enchantment) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.removeEnchant(enchantment));
+    /**
+     * @param enchantment
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> removeEnchantment(Enchantment enchantment) {
+        return applyMeta(meta -> meta.removeEnchant(enchantment));
     }
 
-    default ItemBuilder setInfiniteDurability() {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.setUnbreakable(true));
+    /**
+     * @param itemFlag
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> addItemFlags(ItemFlag itemFlag) {
+        return applyMeta(meta -> meta.addItemFlags(itemFlag));
     }
 
-    default ItemBuilder setSkullOwner(OfflinePlayer player) {
-        return applyItemMeta(SkullMeta.class, itemMeta -> itemMeta.setOwningPlayer(player));
+    /**
+     * @param itemFlag
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> removeItemFlags(ItemFlag itemFlag) {
+        return applyMeta(meta -> meta.removeItemFlags(itemFlag));
     }
 
-    default ItemBuilder setLeatherArmorColor(Color color) {
-        return applyItemMeta(LeatherArmorMeta.class, meta -> meta.setColor(color));
+    /**
+     * @param attribute
+     * @param attributeModifier
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> addAttributes(Attribute attribute, AttributeModifier attributeModifier) {
+        return applyMeta(meta -> meta.addAttributeModifier(attribute, attributeModifier));
     }
 
-    default ItemBuilder setBannerPattern(Pattern pattern) {
-        return applyItemMeta(BannerMeta.class, bannerMeta -> bannerMeta.addPattern(pattern));
+    /**
+     * @param attribute
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> removeAttributes(Attribute attribute) {
+        return applyMeta(meta -> meta.removeAttributeModifier(attribute));
     }
 
-    default ItemBuilder addItemFlags(ItemFlag itemFlag) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.addItemFlags(itemFlag));
+    /**
+     * @param equipmentSlot
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> removeAttributes(EquipmentSlot equipmentSlot) {
+        return applyMeta(meta -> meta.removeAttributeModifier(equipmentSlot));
     }
 
-    default ItemBuilder removeItemFlags(ItemFlag itemFlag) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.removeItemFlags(itemFlag));
-    }
-    
-    default ItemBuilder addAttributes(Attribute attribute, AttributeModifier attributeModifier) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.addAttributeModifier(attribute, attributeModifier));
-    }
-
-    default ItemBuilder removeAttributes(Attribute attribute) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.removeAttributeModifier(attribute));
+    /**
+     * @param attribute
+     * @param attributeModifier
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> removeAttributes(Attribute attribute, AttributeModifier attributeModifier) {
+        return applyMeta(meta -> meta.removeAttributeModifier(attribute, attributeModifier));
     }
 
-    default ItemBuilder removeAttributes(EquipmentSlot equipmentSlot) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.removeAttributeModifier(equipmentSlot));
+    /**
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<T> setUnbreakble() {
+        return applyMeta(meta -> meta.setUnbreakable(true));
     }
 
-    default ItemBuilder removeAttributes(Attribute attribute, AttributeModifier attributeModifier) {
-        return applyItemMeta(ItemMeta.class, itemMeta -> itemMeta.removeAttributeModifier(attribute, attributeModifier));
-    }
-
-    default <T> ItemBuilder applyItemMeta(Class<T> clazz, Consumer<T> metaAction) {
-        if (!item().hasItemMeta()) {
-            return this;
-        }
-
-        try {
-            final ItemMeta itemMeta = item().getItemMeta();
-            final T value = clazz.cast(itemMeta);
-            metaAction.accept(value);
-
-        } catch (RuntimeException exception) {
-            throw new RuntimeException(exception);
-        }
+    /**
+     * @param meta
+     * @return
+     */
+    @NotNull
+    protected ItemBuilder<T> applyMeta(Consumer<T> meta) {
+        this.meta = meta;
         return this;
+    }
 
+    /**
+     * @return
+     */
+    @Override
+    public ItemStack get() {
+        final ItemMeta meta = this.get().getItemMeta();
+        this.meta.accept((T) meta);
+        get().setItemMeta(meta);
+        return new ItemStack(material, amount);
     }
 }

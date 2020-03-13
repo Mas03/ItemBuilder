@@ -1,17 +1,33 @@
 package net.mason;
 
+import com.sun.istack.internal.NotNull;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 
-public interface PotionItemBuilder extends ItemBuilder {
+public class PotionItemBuilder extends ItemBuilder<PotionMeta> {
 
-    default ItemBuilder setBasePotionData(PotionData potionData) {
-        return applyItemMeta(PotionMeta.class, potionMeta -> potionMeta.setBasePotionData(potionData));
+    public PotionItemBuilder(int amount) {
+        super(Material.POTION, amount);
     }
 
-    default ItemBuilder setColor(Color color) {
-        return applyItemMeta(PotionMeta.class, potionMeta -> potionMeta.setColor(color));
+    /**
+     * @param potionData
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<PotionMeta> setBasePotionData(PotionData potionData) {
+        return applyMeta(potionMeta -> potionMeta.setBasePotionData(potionData));
+    }
+
+    /**
+     * @param color
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<PotionMeta> setColor( Color color) {
+        return applyMeta(potionMeta -> potionMeta.setColor(color));
     }
 
 }

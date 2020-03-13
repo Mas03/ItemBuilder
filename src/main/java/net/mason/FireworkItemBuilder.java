@@ -1,31 +1,66 @@
 package net.mason;
 
+import com.sun.istack.internal.NotNull;
 import org.bukkit.FireworkEffect;
+import org.bukkit.Material;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-public interface FireworkItemBuilder extends ItemBuilder {
+public class FireworkItemBuilder extends ItemBuilder<FireworkMeta> {
 
-    default ItemBuilder addEffect(FireworkEffect effect) {
-        return applyItemMeta(FireworkMeta.class, fireworkMeta -> fireworkMeta.addEffect(effect));
+    public FireworkItemBuilder(int amount) {
+        super(Material.FIREWORK_ROCKET, amount);
     }
 
-    default ItemBuilder addEffects(Iterable<FireworkEffect> effects) {
-        return applyItemMeta(FireworkMeta.class, fireworkMeta -> fireworkMeta.addEffects(effects));
+    /**
+     * @param effect
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<FireworkMeta> addEffect(FireworkEffect effect) {
+        return applyMeta(fireworkMeta -> fireworkMeta.addEffect(effect));
     }
 
-    default ItemBuilder addEffects(FireworkEffect... effects) {
-        return applyItemMeta(FireworkMeta.class, fireworkMeta -> fireworkMeta.addEffects(effects));
+    /**
+     * @param effects
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<FireworkMeta> addEffects(Iterable<FireworkEffect> effects) {
+        return applyMeta(fireworkMeta -> fireworkMeta.addEffects(effects));
     }
 
-    default ItemBuilder removeEffect(Integer integer) {
-        return applyItemMeta(FireworkMeta.class, fireworkMeta -> fireworkMeta.removeEffect(integer));
+    /**
+     * @param effects
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<FireworkMeta> addEffects(FireworkEffect... effects) {
+        return applyMeta(fireworkMeta -> fireworkMeta.addEffects(effects));
     }
 
-    default ItemBuilder setPower(Integer integer) {
-        return applyItemMeta(FireworkMeta.class, fireworkMeta -> fireworkMeta.setPower(integer));
+    /**
+     * @param integer
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<FireworkMeta> removeEffect(Integer integer) {
+        return applyMeta(fireworkMeta -> fireworkMeta.removeEffect(integer));
     }
 
-    default ItemBuilder clearEffects() {
-        return applyItemMeta(FireworkMeta.class, FireworkMeta::clearEffects);
+    /**
+     * @param integer
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<FireworkMeta> setPower(Integer integer) {
+        return applyMeta(fireworkMeta -> fireworkMeta.setPower(integer));
+    }
+
+    /**
+     * @return
+     */
+    @NotNull
+    public ItemBuilder<FireworkMeta> clearEffects() {
+        return applyMeta(FireworkMeta::clearEffects);
     }
 }
