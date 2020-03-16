@@ -1,6 +1,5 @@
 package me.mason.api.builder;
 
-import com.sun.istack.internal.NotNull;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
 
@@ -22,7 +22,8 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
      */
     private final Material material;
     private int amount;
-    @NotNull private Consumer<T> meta = ($) -> {};
+    @NotNull
+    private Consumer<T> meta = ($) -> {};
 
     /**
      * @param material The material that will be used {@link Material}

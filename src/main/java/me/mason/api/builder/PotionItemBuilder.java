@@ -1,11 +1,11 @@
 package me.mason.api.builder;
 
-import com.sun.istack.internal.NotNull;
-import net.mason.impl.Example;
+import me.mason.impl.Example;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
+import org.jetbrains.annotations.NotNull;
 
 public final class PotionItemBuilder extends ItemBuilder<PotionMeta> {
 

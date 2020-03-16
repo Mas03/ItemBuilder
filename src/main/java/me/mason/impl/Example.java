@@ -13,12 +13,11 @@ import java.util.Arrays;
 
 public class Example {
 
-    private Example() {
-        throw new UnsupportedOperationException("This is an example class and cannot be instantiated.");
+    public Example() {
+        exampleCode();
     }
 
     public void exampleCode() {
-
         final ItemStack itemStack = new ItemBuilder<>(Material.SNOW)
                 .setName("My itemstack")
                 .setLore(Arrays.asList("my", "custom", "lore"))

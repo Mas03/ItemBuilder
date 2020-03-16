@@ -2,8 +2,6 @@ package me.mason.api.builder;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import me.mason.impl.Example;
 import org.bukkit.Material;
@@ -11,6 +9,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static java.util.UUID.randomUUID;
 import static org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder.encodeString;
