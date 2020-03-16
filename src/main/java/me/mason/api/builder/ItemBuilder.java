@@ -22,6 +22,7 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
      */
     private final Material material;
     private int amount;
+
     @NotNull
     private Consumer<T> meta = ($) -> {};
 
