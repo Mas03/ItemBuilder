@@ -1,12 +1,12 @@
-#ItemBuilder
+# ItemBuilder
 *Developed by Mas03 & RarLab*
 
-###Latest Master Branch Release:
+### Latest Master Branch Release:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![](https://jitpack.io/v/Mas03/ItemBuilder.svg)](https://jitpack.io/#Mas03/ItemBuilder)
 
 &nbsp;
-##How to shade the jar:
+## How to shade the jar:
    
    ![Apache Maven](https://maven.apache.org/images/maven-logo-black-on-white.png)
 
