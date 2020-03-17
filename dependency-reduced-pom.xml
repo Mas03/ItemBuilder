@@ -23,13 +23,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <artifactSet>
-            <excludes>
-              <exclude>org.spigotmc</exclude>
-            </excludes>
-          </artifactSet>
-        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -44,12 +37,6 @@
     </repository>
   </repositories>
   <dependencies>
-    <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot</artifactId>
-      <version>1.15.2-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>

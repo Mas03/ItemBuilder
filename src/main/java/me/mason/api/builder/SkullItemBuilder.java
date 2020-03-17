@@ -1,11 +1,5 @@
 package me.mason.api.builder;
 
-import static java.util.UUID.randomUUID;
-import static org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder.encodeString;
-
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import java.lang.reflect.Field;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import me.mason.impl.Example;
 import org.bukkit.Material;
@@ -76,6 +70,7 @@ public final class SkullItemBuilder extends ItemBuilder<SkullMeta> {
      * @param texture Texture to be applied.
      * @return {@link String}
      */
+    /*
     @Setter
     public ItemBuilder<SkullMeta> applyTexture(@Nullable String texture) {
         if (texture != null) {
@@ -101,4 +96,6 @@ public final class SkullItemBuilder extends ItemBuilder<SkullMeta> {
         }
         return null;
     }
+
+     */
 }
