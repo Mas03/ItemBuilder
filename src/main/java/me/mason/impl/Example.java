@@ -2,6 +2,7 @@ package me.mason.impl;
 
 import me.mason.api.builder.FireworkItemBuilder;
 import me.mason.api.builder.ItemBuilder;
+import me.mason.api.builder.SkullItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -36,8 +37,14 @@ public class Example {
                                 build())
                 .get();
 
+        final ItemStack skullStack = new SkullItemBuilder()
+            .setOwningPlayer(Bukkit.getOnlinePlayers().parallelStream()
+            .findFirst().get())
+            .setLore(Arrays.asList("A masterpiece from heaven", "God's mightiest skull"))
+            .get();
+
         Bukkit.getOnlinePlayers()
-                .forEach(player -> player.getInventory().addItem(itemStack, fireworkStack));
+                .forEach(player -> player.getInventory().addItem(itemStack, fireworkStack, skullStack));
 
     }
 }
