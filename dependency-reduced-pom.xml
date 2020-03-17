@@ -23,6 +23,13 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <artifactSet>
+            <excludes>
+              <exclude>org.spigotmc</exclude>
+            </excludes>
+          </artifactSet>
+        </configuration>
       </plugin>
     </plugins>
   </build>
