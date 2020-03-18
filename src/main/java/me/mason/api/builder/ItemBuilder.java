@@ -1,5 +1,10 @@
 package me.mason.api.builder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import me.mason.api.misc.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -8,11 +13,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
@@ -24,11 +24,12 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
     private int amount;
 
     @NotNull
-    private Consumer<T> meta = ($) -> {};
+    private Consumer<T> meta = ($) -> {
+    };
 
     /**
      * @param material The material that will be used {@link Material}
-     * @param amount The amount of the material {@link Integer}
+     * @param amount   The amount of the material {@link Integer}
      */
     public ItemBuilder(@NotNull Material material, @NotNull int amount) {
         this.material = material;
@@ -38,7 +39,7 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
     /**
      * @param material The material that will be used {@link Material}
      */
-    public ItemBuilder(@NotNull Material material){
+    public ItemBuilder(@NotNull Material material) {
         this.material = material;
         this.amount = 1;
     }
@@ -49,7 +50,7 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
      */
     @NotNull
     public ItemBuilder<T> setName(String name) {
-        return applyMeta(meta -> meta.setDisplayName(name));
+        return applyMeta(meta -> meta.setDisplayName(Color.translateColor(name)));
     }
 
     /**
@@ -101,13 +102,15 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
     }
 
     /**
-     * @param enchantment The enchantment you want to add
-     * @param level The enchantment Level you want to add
-     * @param ignoreLevelRestriction whether you want to make the enchantment level higher than natural level.
+     * @param enchantment            The enchantment you want to add
+     * @param level                  The enchantment Level you want to add
+     * @param ignoreLevelRestriction whether you want to make the enchantment level higher than
+     *                               natural level.
      * @return {@link Enchantment} {@link Integer} {@link Boolean}
      */
     @NotNull
-    public ItemBuilder<T> addEnchantment(Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+    public ItemBuilder<T> addEnchantment(Enchantment enchantment, int level,
+        boolean ignoreLevelRestriction) {
         return applyMeta(meta -> meta.addEnchant(enchantment, level, ignoreLevelRestriction));
     }
 
@@ -121,7 +124,8 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
     }
 
     /**
-     * @param itemFlag Set item flags which should be ignored when rendering a ItemStack in the Client.
+     * @param itemFlag Set item flags which should be ignored when rendering a ItemStack in the
+     *                 Client.
      * @return {@link ItemFlag}
      */
     @NotNull
@@ -139,12 +143,13 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
     }
 
     /**
-     * @param attribute Adds an attribute
+     * @param attribute         Adds an attribute
      * @param attributeModifier Adds its corresponding modifier
      * @return {@link Attribute} {@link AttributeModifier}
      */
     @NotNull
-    public ItemBuilder<T> addAttributeModifier(Attribute attribute, AttributeModifier attributeModifier) {
+    public ItemBuilder<T> addAttributeModifier(Attribute attribute,
+        AttributeModifier attributeModifier) {
         return applyMeta(meta -> meta.addAttributeModifier(attribute, attributeModifier));
     }
 
@@ -159,8 +164,8 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
 
     /**
      * @param equipmentSlot Remove all Attributes and AttributeModifiers for a given EquipmentSlot.
-     * If the given EquipmentSlot is null, this will remove all AttributeModifiers that do not have an EquipmentSlot set.
-     *
+     *                      If the given EquipmentSlot is null, this will remove all
+     *                      AttributeModifiers that do not have an EquipmentSlot set.
      * @return {@link EquipmentSlot}
      */
     @NotNull
@@ -169,12 +174,13 @@ public class ItemBuilder<T extends ItemMeta> implements Supplier<ItemStack> {
     }
 
     /**
-     * @param attribute Removes the specific attribute
+     * @param attribute         Removes the specific attribute
      * @param attributeModifier removes the specific modifier
      * @return {@link Attribute}, {@link AttributeModifier}
      */
     @NotNull
-    public ItemBuilder<T> removeAttributes(Attribute attribute, AttributeModifier attributeModifier) {
+    public ItemBuilder<T> removeAttributes(Attribute attribute,
+        AttributeModifier attributeModifier) {
         return applyMeta(meta -> meta.removeAttributeModifier(attribute, attributeModifier));
     }
 

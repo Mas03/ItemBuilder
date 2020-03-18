@@ -20,7 +20,7 @@ public final class FireworkItemBuilder extends ItemBuilder<FireworkMeta> {
     /**
      * The Constructor {@link Example} for an example
      */
-    public FireworkItemBuilder(){
+    public FireworkItemBuilder() {
         super(Material.FIREWORK_ROCKET);
     }
 

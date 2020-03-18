@@ -22,14 +22,14 @@ public final class SkullItemBuilder extends ItemBuilder<SkullMeta> {
      * @param amount the amount of the ItemStack
      */
     public SkullItemBuilder(int amount) {
-        super(Material.SKELETON_SKULL, amount);
+        super(Material.PLAYER_HEAD, amount);
     }
 
     /**
      * The Constructor {@link Example} for an example
      */
     public SkullItemBuilder() {
-        super(Material.SKELETON_SKULL);
+        super(Material.PLAYER_HEAD);
     }
 
     /**
@@ -59,7 +59,11 @@ public final class SkullItemBuilder extends ItemBuilder<SkullMeta> {
     @Setter
     public ItemBuilder<SkullMeta> setOwningPlayer(@Nullable OfflinePlayer offlinePlayer) {
         if (offlinePlayer != null) {
-            return applyMeta(skullMeta -> skullMeta.setOwningPlayer(offlinePlayer));
+            return applyMeta(skullMeta -> {
+                if (!skullMeta.hasOwner()) {
+                    skullMeta.setOwningPlayer(offlinePlayer);
+                }
+            });
         }
         return null;
     }
